@@ -1,73 +1,40 @@
-import { useState } from "react";
+import { connect } from "react-redux";
+import { decrement, increment } from "../redux/counter/actions";
 
-export default function Counter() {
-  const [count, setCount] = useState(0);
-
-  const increment = () => {
-    setCount((prevCount) => prevCount + 1);
-  };
-
-  const decrement = () => {
-    setCount((prevCount) => prevCount - 1);
-  };
-
+function Counter({ count, increment, decrement }) {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="bg-white rounded-3xl shadow-lg border border-gray-100 px-16 py-12 flex flex-col items-center gap-8">
-        <p className="text-xs tracking-widest uppercase text-gray-400 font-medium">
-          Counter
-        </p>
-
-        <div className="text-8xl font-bold text-gray-900 min-w-[3ch] text-center tabular-nums">
-          {count}
-        </div>
-
-        <div className="w-48 h-1 bg-gray-100 rounded-full overflow-hidden">
-          <div
-            className={`h-full rounded-full transition-all duration-300 ${
-              count > 0
-                ? "bg-emerald-500"
-                : count < 0
-                  ? "bg-red-400"
-                  : "bg-indigo-400"
-            }`}
-            style={{
-              width: `${Math.min(Math.max(50 + count * 4, 4), 96)}%`,
-            }}
-          />
-        </div>
-
-        <div className="flex items-center gap-4">
-          <button
-            onClick={decrement}
-            className="px-7 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-700 text-sm font-medium hover:bg-gray-100 hover:border-gray-300 active:scale-95 transition-all duration-100"
-          >
-            Decrement
-          </button>
-          <button
-            onClick={increment}
-            className="px-7 py-3 rounded-xl bg-indigo-500 text-white text-sm font-medium hover:bg-indigo-600 active:scale-95 transition-all duration-100"
-          >
-            Increment
-          </button>
-        </div>
-
-        <p
-          className={`text-xs font-medium transition-colors duration-200 ${
-            count > 0
-              ? "text-emerald-600"
-              : count < 0
-                ? "text-red-500"
-                : "text-gray-400"
-          }`}
+    <div className="p-4 h-auto flex flex-col items-center justify-center space-y-5 bg-white rounded shadow">
+      <div className="text-2xl font-semibold">{count}</div>
+      <div className="flex space-x-3">
+        <button
+          className="bg-indigo-400 text-white px-3 py-2 rounded shadow"
+          onClick={increment}
         >
-          {count > 0
-            ? `+${count} above zero`
-            : count < 0
-              ? `${count} below zero`
-              : "neutral"}
-        </p>
+          Increment
+        </button>
+        <button
+          className="bg-red-400 text-white px-3 py-2 rounded shadow"
+          onClick={decrement}
+        >
+          Decrement
+        </button>
       </div>
     </div>
   );
 }
+
+const mapStateToProps = (state, ownProps) => {
+  console.log(ownProps);
+  return {
+    count: state.value,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    increment: (value) => dispatch(increment(value)),
+    decrement: (value) => dispatch(decrement(value)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Counter);
