@@ -1,20 +1,21 @@
 import { connect } from "react-redux";
-import { decrement, increment } from "../redux/counter/actions";
+import { decrement, increment } from "./../redux/counter/actions";
 
-function Counter({ count, increment, decrement }) {
+// eslint-disable-next-line react-refresh/only-export-components
+function Counter({ count, incrementHandle, decrementHandle }) {
   return (
     <div className="p-4 h-auto flex flex-col items-center justify-center space-y-5 bg-white rounded shadow">
       <div className="text-2xl font-semibold">{count}</div>
       <div className="flex space-x-3">
         <button
           className="bg-indigo-400 text-white px-3 py-2 rounded shadow"
-          onClick={increment}
+          onClick={() => incrementHandle(3)}
         >
           Increment
         </button>
         <button
           className="bg-red-400 text-white px-3 py-2 rounded shadow"
-          onClick={decrement}
+          onClick={decrementHandle}
         >
           Decrement
         </button>
@@ -23,8 +24,7 @@ function Counter({ count, increment, decrement }) {
   );
 }
 
-const mapStateToProps = (state, ownProps) => {
-  console.log(ownProps);
+const mapStateToProps = (state) => {
   return {
     count: state.value,
   };
@@ -32,8 +32,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    increment: (value) => dispatch(increment(value)),
-    decrement: (value) => dispatch(decrement(value)),
+    incrementHandle: (value) => dispatch(increment(value)),
+    decrementHandle: (value) => dispatch(decrement(value)),
   };
 };
 
